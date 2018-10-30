@@ -1,0 +1,21 @@
+commit 130e587e9baaf612f3a57c85df489a1f365c1189
+Author: Kovid Goyal <kovid@kovidgoyal.net>
+Date:   Sat Aug 11 05:35:58 2018 +0530
+
+    Fix unrar download URL extraction
+
+diff --git a/ci.py b/ci.py
+index 7076085..9c0dce8 100755
+--- a/ci.py
++++ b/ci.py
+@@ -39,8 +39,9 @@ def download(url):
+ 
+ 
+ def download_unrar():
+-    html = download('http://www.rarlab.com/rar_add.htm').decode('utf-8', 'replace')
++    html = download('https://www.rarlab.com/rar_add.htm').decode('utf-8', 'replace')
+     href = re.search(r'<a\s+.*?href="([^"]+)".*?>UnRAR source</a>', html).group(1)
++    href = 'https://www.rarlab.com/' + href
+     print('Downloading unrar', href)
+     sys.stdout.flush()
+     return download(href)

@@ -1,0 +1,30 @@
+Source: unrardll
+Section: non-free/python
+Priority: optional
+Maintainer: Norbert Preining <preining@debian.org>
+Build-Depends: debhelper (>= 10),
+               dh-python,
+               python-all-dev,
+               python3-all-dev,
+               python-setuptools,
+               python3-setuptools,
+               python-pkgconfig,
+               python3-pkgconfig,
+               libunrar-dev
+Standards-Version: 4.2.1
+XS-Autobuild: yes
+Homepage: https://github.com/kovidgoyal/unrardll
+Vcs-Browser: https://salsa.debian.org/preining/unrardll
+Vcs-Git: https://salsa.debian.org/preining/unrardll.git
+
+Package: python-unrardll
+Architecture: any
+Depends: ${python:Depends}, ${misc:Depends}, ${shlibs:Depends}, libunrar5
+Description: Python wrapper for the unrar shared library
+ Python library that provides access to libunrar
+
+Package: python3-unrardll
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Description: Python wrapper for the unrar shared library
+ Python library that provides access to libunrar
