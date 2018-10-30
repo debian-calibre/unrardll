@@ -1,5 +1,5 @@
 Source: unrardll
-Section: non-free/python
+Section: contrib/python
 Priority: optional
 Maintainer: Norbert Preining <preining@debian.org>
 Build-Depends: debhelper (>= 10),
