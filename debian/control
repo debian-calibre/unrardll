@@ -8,8 +8,6 @@ Build-Depends: debhelper (>= 10),
                python3-all-dev,
                python-setuptools,
                python3-setuptools,
-               python-pkgconfig,
-               python3-pkgconfig,
                libunrar-dev
 Standards-Version: 4.2.1
 XS-Autobuild: yes

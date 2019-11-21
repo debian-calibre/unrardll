@@ -1,3 +1,12 @@
+unrardll (0.1.3-5) unstable; urgency=medium
+
+  The "We all **really** love Python" release
+  * Drop python*-pkgconfig from builddeps, the py2 version is not available
+    anymore
+  * Another upload for Python3.8 (Closes: #945064)
+
+ -- Norbert Preining <norbert@preining.info>  Thu, 21 Nov 2019 17:33:07 +0900
+
 unrardll (0.1.3-4) unstable; urgency=medium
 
   * Rebuild for Python 3.8
