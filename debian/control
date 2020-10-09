@@ -15,6 +15,8 @@ Vcs-Git: https://github.com/calibre-debian/unrardll.git
 
 Package: python3-unrardll
 Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
+Provides: ${python3:Provides}
 Description: Python wrapper for the unrar shared library
  Python library that provides access to libunrar
