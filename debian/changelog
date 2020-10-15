@@ -1,5 +1,6 @@
-unrardll (0.1.3-7) UNRELEASED; urgency=medium
+unrardll (0.1.4-1) unstable; urgency=medium
 
+  [ Debian Janitor ]
   * Trim trailing whitespace.
   * Bump debhelper from old 10 to 12.
   * Set debhelper-compat version in Build-Depends.
@@ -7,7 +8,12 @@ unrardll (0.1.3-7) UNRELEASED; urgency=medium
     Repository-Browse.
   * Add debian/watch file, using pypi.
 
- -- Debian Janitor <janitor@jelmer.uk>  Tue, 05 May 2020 09:52:10 +0000
+  [ Norbert Preining ]
+  * Add signing key.
+  * New upstream version 0.1.4. (Closes: #972249)
+  * Remove patches included upstream.
+
+ -- Norbert Preining <norbert@preining.info>  Thu, 15 Oct 2020 23:31:27 +0900
 
 unrardll (0.1.3-6) unstable; urgency=medium
 
