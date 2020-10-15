@@ -39,8 +39,9 @@ def download(url):
 
 
 def download_unrar():
-    html = download('http://www.rarlab.com/rar_add.htm').decode('utf-8', 'replace')
+    html = download('https://www.rarlab.com/rar_add.htm').decode('utf-8', 'replace')
     href = re.search(r'<a\s+.*?href="([^"]+)".*?>UnRAR source</a>', html).group(1)
+    href = 'https://www.rarlab.com/' + href
     print('Downloading unrar', href)
     sys.stdout.flush()
     return download(href)
