@@ -1,8 +1,9 @@
-unrardll (0.1.4-2) UNRELEASED; urgency=medium
+unrardll (0.1.4-2) unstable; urgency=medium
 
   * Bump standards version, no changes necessary.
+  * Rebuild for Python bump (Closes: #977170)
 
- -- Norbert Preining <norbert@preining.info>  Sat, 12 Dec 2020 18:18:33 +0900
+ -- Norbert Preining <norbert@preining.info>  Sat, 12 Dec 2020 18:18:58 +0900
 
 unrardll (0.1.4-1) unstable; urgency=medium
 
