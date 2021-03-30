@@ -10,8 +10,8 @@ Build-Depends: debhelper-compat (= 12),
 Standards-Version: 4.5.1
 XS-Autobuild: yes
 Homepage: https://github.com/kovidgoyal/unrardll
-Vcs-Browser: https://github.com/norbusan/unrardll-debian
-Vcs-Git: https://github.com/norbusan/unrardll-debian.git
+Vcs-Browser: https://github.com/calibre-debian/unrardll
+Vcs-Git: https://github.com/calibre-debian/unrardll.git
 
 Package: python3-unrardll
 Architecture: any
