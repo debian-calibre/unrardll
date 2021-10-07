@@ -72,6 +72,11 @@ class Test(Build):
             self.announce('skipping "test" (dry run)')
             return
         sys.path.insert(0, self.build_lib)
+        if iswindows and 'UNRAR_DLL_DIR' in os.environ and hasattr(os, 'add_dll_directory'):
+            unrardir = os.path.join(self.build_lib, 'unrardll')
+            sys.save_dll_dir = os.add_dll_directory(os.environ['UNRAR_DLL_DIR'])
+            print('Added Dll directory:', sys.save_dll_dir, 'with contents:', os.listdir(os.environ['UNRAR_DLL_DIR']))
+            print('Contents of build dir:', unrardir, os.listdir(unrardir), flush=True)
         tests = find_tests()
         r = unittest.TextTestRunner
         result = r(verbosity=2).run(tests)

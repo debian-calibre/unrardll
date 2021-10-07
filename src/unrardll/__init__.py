@@ -15,10 +15,21 @@ from . import unrar
 
 V = namedtuple('Version', 'major minor patch')
 
-version = V(0, 1, 4)
+version = V(0, 1, 5)
 RARDLL_VERSION = unrar.RARDllVersion
 iswindows = hasattr(sys, 'getwindowsversion')
 isosx = 'darwin' in sys.platform.lower()
+
+if iswindows:
+    long_path_prefix = '\\\\?\\'
+
+    def make_long_path_useable(path):
+        if len(path) > 200 and os.path.isabs(path) and not path.startswith(long_path_prefix):
+            path = long_path_prefix + os.path.normpath(path)
+        return path
+else:
+    def make_long_path_useable(path):
+        return path
 
 # local_open() opens a file that wont be inherited by child processes  {{{
 if sys.version_info.major < 3:
@@ -257,7 +268,7 @@ def _extract(f, archive_path, c, location):
             crc_map.pop(filename)
         else:
             ensure_dir(os.path.dirname(dest))
-            open_file = local_open(dest, 'ab' if dest in seen else 'wb')
+            open_file = local_open(make_long_path_useable(dest), 'ab' if dest in seen else 'wb')
             c.reset(write=open_file.write, crc=crc_map[filename])
             extracted = True
         try:

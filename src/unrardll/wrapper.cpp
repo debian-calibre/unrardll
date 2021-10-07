@@ -16,7 +16,7 @@
 #else
 #include <unistd.h>
 #endif
-#include <unrar/dll.hpp>  
+#include <unrar/dll.hpp>
 #include <errno.h>
 
 #define CALLBACK_ERROR_SZ 256
@@ -30,7 +30,7 @@ typedef struct {
 } UnrarOperation;
 
 #define ALLOW_THREADS uo->thread_state = PyGILState_Ensure();
-#define BLOCK_THREADS PyGILState_Release(uo->thread_state); 
+#define BLOCK_THREADS PyGILState_Release(uo->thread_state);
 
 #define STRFY(x) #x
 #define STRFY2(x) STRFY(x)
@@ -47,21 +47,21 @@ static inline void
 convert_rar_error(unsigned int code) {
 #define CASE(x) case x: PyErr_SetString(UNRARError, #x); break;
     switch(code) {
-        CASE(ERAR_SUCCESS)             
-        CASE(ERAR_END_ARCHIVE)        
-        CASE(ERAR_BAD_DATA)           
-        CASE(ERAR_BAD_ARCHIVE)        
-        CASE(ERAR_UNKNOWN_FORMAT)     
-        CASE(ERAR_EOPEN)              
-        CASE(ERAR_ECREATE)            
-        CASE(ERAR_ECLOSE)             
-        CASE(ERAR_EREAD)              
-        CASE(ERAR_EWRITE)             
-        CASE(ERAR_SMALL_BUF)          
-        CASE(ERAR_UNKNOWN)            
-        CASE(ERAR_MISSING_PASSWORD)   
-        CASE(ERAR_EREFERENCE)         
-        CASE(ERAR_BAD_PASSWORD)       
+        CASE(ERAR_SUCCESS)
+        CASE(ERAR_END_ARCHIVE)
+        CASE(ERAR_BAD_DATA)
+        CASE(ERAR_BAD_ARCHIVE)
+        CASE(ERAR_UNKNOWN_FORMAT)
+        CASE(ERAR_EOPEN)
+        CASE(ERAR_ECREATE)
+        CASE(ERAR_ECLOSE)
+        CASE(ERAR_EREAD)
+        CASE(ERAR_EWRITE)
+        CASE(ERAR_SMALL_BUF)
+        CASE(ERAR_UNKNOWN)
+        CASE(ERAR_MISSING_PASSWORD)
+        CASE(ERAR_EREFERENCE)
+        CASE(ERAR_BAD_PASSWORD)
 
         case ERAR_NO_MEMORY:
             NOMEM;
@@ -96,7 +96,7 @@ wchar_to_unicode(const wchar_t *o, size_t sz) {
 
 #define NAME "RARFileHandle"
 
-static void 
+static void
 close_encapsulated_file(PyObject *capsule) {
     if (PyCapsule_IsValid(capsule, NAME)) {
         UnrarOperation* uo = (UnrarOperation*)PyCapsule_GetPointer(capsule, NAME);
@@ -143,7 +143,7 @@ write_all(const char* data, size_t sz, int fd) {
         if (written == 0 && err != 0)
             return false;
         sz -= written;
-    } 
+    }
     return true;
 }
 
@@ -155,13 +155,13 @@ unrar_callback(UINT msg, LPARAM user_data, LPARAM p1, LPARAM p2) {
     // In systems where int and long have different sizes (win64) we cannot
     // cast LPARAM which is a signed number to an int, so we convert only the
     // low order bytes, which is correct for positive numbers
-#define length (p2 & 0xffffffff) 
+#define length (p2 & 0xffffffff)
     switch(msg) {
         case UCM_CHANGEVOLUME:
         case UCM_CHANGEVOLUMEW:
             if (p2 == RAR_VOL_NOTIFY) ret = 0;
             else {
-                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Could not find next part of a multi-part archive"); 
+                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Could not find next part of a multi-part archive");
                 uo->has_callback_error = true;
             }
             break;
@@ -169,7 +169,7 @@ unrar_callback(UINT msg, LPARAM user_data, LPARAM p1, LPARAM p2) {
             break;  // we only support unicode passwords, which is fine since unrar asks for those before trying ansi password
         case UCM_NEEDPASSWORDW:
             if (p2 <= 0) {
-                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Invalid password buffer length sent to callback: %ld", p2); 
+                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Invalid password buffer length sent to callback: %ld", p2);
                 uo->has_callback_error = true;
                 break;
             }
@@ -177,7 +177,7 @@ unrar_callback(UINT msg, LPARAM user_data, LPARAM p1, LPARAM p2) {
                 BLOCK_THREADS;
                 PyObject *pw = PyObject_CallMethod(callback, _get_password, NULL);
                 if (PyErr_Occurred()) {
-                    snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "An exception occurred in the password callback handler"); 
+                    snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "An exception occurred in the password callback handler");
                     uo->has_callback_error = true;
                 }
                 if (pw && pw != Py_None) {
@@ -185,39 +185,39 @@ unrar_callback(UINT msg, LPARAM user_data, LPARAM p1, LPARAM p2) {
                     Py_DECREF(pw);
                     if (sz > 0) ret = 0;
                     else {
-                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "The password callback handler did not return a unicode object"); 
+                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "The password callback handler did not return a unicode object");
                         uo->has_callback_error = true;
                     }
                 }
                 PyErr_Clear();
                 ALLOW_THREADS;
             } else {
-                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "No callback provided"); 
+                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "No callback provided");
                 uo->has_callback_error = true;
             }
             break;
         case UCM_PROCESSDATA:
             if (p2 < 0) {
-                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Invalid buffer length sent to callback: %ld", p2); 
+                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Invalid buffer length sent to callback: %ld", p2);
                 uo->has_callback_error = true;
                 break;
             }
             if (callback) {
                 if (uo->output_fd > -1) {
                     if (!write_all(reinterpret_cast<const char*>(p1), length, uo->output_fd)) {
-                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Failed to write all bytes to output file. Error: %s", strerror(errno)); 
+                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Failed to write all bytes to output file. Error: %s", strerror(errno));
                         uo->has_callback_error = true;
                     } else ret = 0;
                 } else {
                     BLOCK_THREADS;
                     PyObject *pw = PyObject_CallMethod(callback, _process_data, (char*)BYTES_FMT, reinterpret_cast<char*>(p1), length);
                     if (PyErr_Occurred()) {
-                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "An exception occurred in the password callback handler"); 
+                        snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "An exception occurred in the password callback handler");
                         uo->has_callback_error = true;
                     } else {
                         ret = (pw && PyObject_IsTrue(pw)) ? 0 : -1;
                         if (ret != 0) {
-                            snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Processing canceled by the callback"); 
+                            snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "Processing canceled by the callback");
                             uo->has_callback_error = true;
                         }
                     }
@@ -225,7 +225,7 @@ unrar_callback(UINT msg, LPARAM user_data, LPARAM p1, LPARAM p2) {
                     ALLOW_THREADS;
                 }
             } else {
-                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "No callback provided"); 
+                snprintf(uo->callback_error, CALLBACK_ERROR_SZ, "No callback provided");
                 uo->has_callback_error = true;
             }
             break;
@@ -245,7 +245,7 @@ open_archive(PyObject *self, PyObject *args) {
     UnrarOperation *uo = NULL;
     wchar_t pathbuf[4096] = {0};
     char comment_buf[MAX_COMMENT_LENGTH];
-    bool get_comments;
+    int get_comments = 0;
 
     if (!PyArg_ParseTuple(args, "O!O|IO", &PyUnicode_Type, &path, &callback, &(open_info.OpenMode), &(get_comment))) return NULL;
     if (unicode_to_wchar(path, pathbuf, sizeof(pathbuf) / sizeof(pathbuf[0])) < 0) return NULL;
@@ -303,9 +303,9 @@ from_capsule(PyObject *file_capsule) {
 
 #define FROM_CAPSULE(x) from_capsule(x); if (uo == NULL) return NULL;
 
-static inline unsigned long
+static inline unsigned long long
 combine(unsigned int h, unsigned int l) {
-    unsigned long ans = h;
+    unsigned long long ans = h;
     return (ans << 32) | l;
 }
 
@@ -318,8 +318,8 @@ header_to_python(RARHeaderDataEx *fh, HANDLE data) {
 #define AVAL(name, code, val) {if (!(temp = Py_BuildValue(code, (val)))) goto error; if (PyDict_SetItemString(ans, name, temp) != 0) goto error; Py_DECREF(temp); temp = NULL;}
     AVAL("filename", "N", filename);
     AVAL("flags", "H", fh->Flags);
-    AVAL("pack_size", "k", combine(fh->PackSizeHigh, fh->PackSize));
-    AVAL("unpack_size", "k", combine(fh->UnpSizeHigh, fh->UnpSize));
+    AVAL("pack_size", "K", combine(fh->PackSizeHigh, fh->PackSize));
+    AVAL("unpack_size", "K", combine(fh->UnpSizeHigh, fh->UnpSize));
     AVAL("host_os", "b", fh->HostOS);
     AVAL("file_crc", "I", fh->FileCRC);
     AVAL("file_time", "I", fh->FileTime);
@@ -327,9 +327,9 @@ header_to_python(RARHeaderDataEx *fh, HANDLE data) {
     AVAL("method", "b", fh->Method);
     AVAL("file_attr", "I", fh->FileAttr);
     AVAL("is_dir", "O", fh->Flags & RHDF_DIRECTORY ? Py_True : Py_False);
-    // AVAL("atime", "k", combine(fh->AtimeHigh, fh->AtimeLow));
-    // AVAL("ctime", "k", combine(fh->CtimeHigh, fh->CtimeLow));
-    // AVAL("mtime", "k", combine(fh->MtimeHigh, fh->MtimeLow));
+    // AVAL("atime", "K", combine(fh->AtimeHigh, fh->AtimeLow));
+    // AVAL("ctime", "K", combine(fh->CtimeHigh, fh->CtimeLow));
+    // AVAL("mtime", "K", combine(fh->MtimeHigh, fh->MtimeLow));
     AVAL("redir_type", "I", fh->RedirType);
     if (fh->RedirNameSize > 0) {
         filename = wchar_to_unicode(fh->RedirName, fh->RedirNameSize);
@@ -424,13 +424,13 @@ static PyMethodDef methods[] = {
 
 #if PY_MAJOR_VERSION >= 3
 
-static int 
+static int
 traverse(PyObject *m, visitproc visit, void *arg) {
     Py_VISIT(GETSTATE(m)->error);
     return 0;
 }
 
-static int 
+static int
 clear(PyObject *m) {
     Py_CLEAR(GETSTATE(m)->error);
     return 0;

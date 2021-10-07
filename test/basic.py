@@ -12,7 +12,7 @@ from binascii import crc32
 
 from unrardll import (
     BadPassword, PasswordRequired, comment, extract, extract_member, headers, names,
-    open_archive, unrar
+    open_archive, unrar, make_long_path_useable
 )
 
 from . import TempDir, TestCase, base
@@ -20,6 +20,11 @@ from . import TempDir, TestCase, base
 multipart_rar = os.path.join(base, 'example_split_archive.part1.rar')
 password_rar = os.path.join(base, 'example_password_protected.rar')
 simple_rar = os.path.join(base, 'simple.rar')
+if os.sep == '\\':
+    prefix = '\\\\?\\'
+    multipart_rar = prefix + os.path.abspath(multipart_rar)
+    password_rar = prefix + os.path.abspath(password_rar)
+    simple_rar = prefix + os.path.abspath(simple_rar)
 sr_data = {
     '1': b'',
     '1/sub-one': b'sub-one\n',
@@ -76,6 +81,8 @@ class BasicTests(TestCase):
     def test_extract(self):
         for v in (True, False):
             with TempDir() as tdir:
+                tdir = os.path.join(tdir, 'a' * 250)
+                os.makedirs(make_long_path_useable(tdir))
                 extract(simple_rar, tdir, verify_data=v)
                 h = {
                     normalize(os.path.abspath(os.path.join(tdir, h['filename']))): h
