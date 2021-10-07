@@ -1,3 +1,16 @@
+unrardll (0.1.5-1) UNRELEASED; urgency=medium
+
+  * Use pristine-tar to import upstream code by default
+  * New upstream version 0.1.5
+  * Update watch file from pypi.debian.net
+  * Update compat version
+  * Use all substvar variables
+  * No need root
+  * Upgrade Debian standards
+  * Rediff patches
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 09 Oct 2021 00:18:20 +0900
+
 unrardll (0.1.4-3) UNRELEASED; urgency=medium
 
   * Update VCS fields.
