@@ -1,5 +1,3 @@
 include LICENSE
 include ci.py
 recursive-include test *
-global-exclude *.py[co]
-global-exclude __pycache__
