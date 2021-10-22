@@ -12,8 +12,8 @@ Build-Depends: debhelper-compat (= 13),
 Standards-Version: 4.6.0
 XS-Autobuild: yes
 Homepage: https://github.com/kovidgoyal/unrardll
-Vcs-Browser: https://github.com/calibre-debian/unrardll
-Vcs-Git: https://github.com/calibre-debian/unrardll.git
+Vcs-Browser: https://github.com/debian-calibre/unrardll
+Vcs-Git: https://github.com/debian-calibre/unrardll.git
 Rules-Requires-Root: no
 
 Package: python3-unrardll
