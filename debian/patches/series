@@ -1,2 +1,3 @@
 0001-Remove-nonexistent-file-from-manifest.patch
 0002-Remove-Python-2-generated-file-from-source-file-list.patch
+0003-Use-Python-3.patch
