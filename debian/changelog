@@ -1,3 +1,9 @@
+unrardll (0.1.5-4) UNRELEASED; urgency=medium
+
+  * Rebuild for python3.10-only transition
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Mon, 18 Jul 2022 10:45:01 +0900
+
 unrardll (0.1.5-3) unstable; urgency=medium
 
   * Upgrade Debian standards
