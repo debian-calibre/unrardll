@@ -1,4 +1,4 @@
 upstream/0001-Modernize-some-plumbing.patch
 upstream/0002-ssize_t-not-defined-in-msvc.patch
-0001-Remove-nonexistent-file-from-manifest.patch
-0002-Remove-Python-2-generated-file-from-source-file-list.patch
+0003-Remove-nonexistent-file-from-manifest.patch
+0004-Remove-Python-2-generated-file-from-source-file-list.patch
