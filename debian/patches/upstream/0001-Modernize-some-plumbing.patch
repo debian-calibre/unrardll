@@ -1,0 +1,272 @@
+From: Kovid Goyal <kovid@kovidgoyal.net>
+Date: Sat, 18 Dec 2021 08:10:10 +0530
+Subject: Modernize some plumbing
+
+---
+ pyproject.toml           |   3 ++
+ setup.cfg                |  28 ++++++++++++
+ setup.py                 | 114 +++++++++++++++++++----------------------------
+ src/unrardll/__init__.py |   3 +-
+ test/__init__.py         |   2 +-
+ test/basic.py            |   4 +-
+ 6 files changed, 81 insertions(+), 73 deletions(-)
+ create mode 100644 pyproject.toml
+
+diff --git a/pyproject.toml b/pyproject.toml
+new file mode 100644
+index 0000000..faed32d
+--- /dev/null
++++ b/pyproject.toml
+@@ -0,0 +1,3 @@
++[build-system]
++requires = ["setuptools >= 57.4.0", "wheel"]
++build-backend = "setuptools.build_meta"
+diff --git a/setup.cfg b/setup.cfg
+index 39ef8e9..b4e84d9 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -1,3 +1,31 @@
++[metadata]
++name = unrardll
++version = attr: unrardll.str_version
++author = Kovid Goyal
++author_email = no@no.no
++description = Wrap the Unrar DLL to enable unraring of files in python
++license = BSD
++platforms = any
++url = https://github.com/kovidgoyal/unrardll
++classifiers =
++    Development Status :: 5 - Production/Stable
++    Intended Audience :: Developers
++    License :: OSI Approved :: BSD License
++    Natural Language :: English
++    Operating System :: OS Independent
++    Programming Language :: Python
++    Topic :: Software Development :: Libraries :: Python Modules
++    Topic :: System :: Archiving :: Compression
++
++[options]
++zip_safe = False
++packages = unrardll
++package_dir = 
++    = src
++
++[options.packages.find]
++where=src
++
+ [flake8]
+ max-line-length = 160
+ 
+diff --git a/setup.py b/setup.py
+index 596dac4..a991ce2 100755
+--- a/setup.py
++++ b/setup.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python
+ # vim:fileencoding=utf-8
+ # License: BSD Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
+ 
+@@ -6,53 +6,17 @@ from __future__ import absolute_import, division, print_function, unicode_litera
+ 
+ import importlib
+ import os
+-import re
+ import sys
+-from distutils.command.build import build as Build
+ 
+-from setuptools import Extension, setup
++from setuptools import Command, Extension, setup
+ 
+-self_path = os.path.abspath(__file__)
+-base = os.path.dirname(self_path)
+ iswindows = hasattr(sys, 'getwindowsversion')
+-raw = open(os.path.join(base, 'src/unrardll/__init__.py'),
+-           'rb').read().decode('utf-8')
+-version = map(
+-    int, re.search(r'^version = V\((\d+), (\d+), (\d+)', raw, flags=re.M).groups())
+-
+-
+-def include_dirs():
+-    ans = []
+-    if 'UNRAR_INCLUDE' in os.environ:
+-        ans.extend(os.environ['UNRAR_INCLUDE'].split(os.pathsep))
+-    return ans
+-
+-
+-def libraries():
+-    return ['unrar']
+-
+-
+-def library_dirs():
+-    ans = []
+-    if 'UNRAR_LIBDIRS' in os.environ:
+-        ans.extend(os.environ['UNRAR_LIBDIRS'].split(os.pathsep))
+-    return ans
+-
+-
+-def macros():
+-    ans = [
+-        ('SILENT', 1),
+-        ('RARDLL', 1),
+-        ('UNRAR', 1), ]
+-    if not iswindows:
+-        ans.append(('_UNIX', 1))
+-    return ans
+ 
+ 
+ def find_tests():
+     import unittest
+     suites = []
+-    for f in os.listdir(os.path.join(base, 'test')):
++    for f in os.listdir('test'):
+         n, ext = os.path.splitext(f)
+         if ext == '.py' and n not in ('__init__',):
+             m = importlib.import_module('test.' + n)
+@@ -61,21 +25,31 @@ def find_tests():
+     return unittest.TestSuite(suites)
+ 
+ 
+-class Test(Build):
++class Test(Command):
+ 
+     description = "run unit tests after in-place build"
++    user_options = []
++    sub_commands = [
++        ('build', None),
++    ]
++
++    def initialize_options(self):
++        pass
++
++    def finalize_options(self):
++        pass
+ 
+     def run(self):
+         import unittest
+-        Build.run(self)
+-        if self.dry_run:
+-            self.announce('skipping "test" (dry run)')
+-            return
+-        sys.path.insert(0, self.build_lib)
++        for cmd_name in self.get_sub_commands():
++            self.run_command(cmd_name)
++        build = self.get_finalized_command('build')
++        sys.path.insert(0, os.path.abspath(build.build_lib))
+         if iswindows and 'UNRAR_DLL_DIR' in os.environ and hasattr(os, 'add_dll_directory'):
+-            unrardir = os.path.join(self.build_lib, 'unrardll')
++            unrardir = os.path.join(build.build_lib, 'unrardll')
+             sys.save_dll_dir = os.add_dll_directory(os.environ['UNRAR_DLL_DIR'])
+-            print('Added Dll directory:', sys.save_dll_dir, 'with contents:', os.listdir(os.environ['UNRAR_DLL_DIR']))
++            print('Added Dll directory:', sys.save_dll_dir,
++                  'with contents:', os.listdir(os.environ['UNRAR_DLL_DIR']))
+             print('Contents of build dir:', unrardir, os.listdir(unrardir), flush=True)
+         tests = find_tests()
+         r = unittest.TextTestRunner
+@@ -85,35 +59,37 @@ class Test(Build):
+             raise SystemExit(1)
+ 
+ 
+-CLASSIFIERS = """\
+-Development Status :: 5 - Production/Stable
+-Intended Audience :: Developers
+-License :: OSI Approved :: BSD License
+-Natural Language :: English
+-Operating System :: OS Independent
+-Programming Language :: Python
+-Topic :: Software Development :: Libraries :: Python Modules
+-Topic :: System :: Archiving :: Compression
+-"""
++def include_dirs():
++    ans = []
++    if 'UNRAR_INCLUDE' in os.environ:
++        ans.extend(os.environ['UNRAR_INCLUDE'].split(os.pathsep))
++    return ans
++
++
++def library_dirs():
++    ans = []
++    if 'UNRAR_LIBDIRS' in os.environ:
++        ans.extend(os.environ['UNRAR_LIBDIRS'].split(os.pathsep))
++    return ans
++
++
++def macros():
++    ans = [
++        ('SILENT', 1),
++        ('RARDLL', 1),
++        ('UNRAR', 1), ]
++    if not iswindows:
++        ans.append(('_UNIX', 1))
++    return ans
++
+ 
+ setup(
+-    name=str('unrardll'),
+-    version='{}.{}.{}'.format(*version),
+-    author='Kovid Goyal',
+-    author_email='redacted@acme.com',
+-    description='Wrap the Unrar DLL to enable unraring of files in python',
+-    license='BSD',
+-    url='https://github.com/kovidgoyal/unrardll',
+-    classifiers=[c for c in CLASSIFIERS.split("\n") if c],
+-    platforms=['any'],
+-    packages=[str('unrardll')],
+-    package_dir={'': str('src')},
+     cmdclass={'test': Test},
+     ext_modules=[
+         Extension(
+             str('unrardll.unrar'),
+             include_dirs=include_dirs(),
+-            libraries=libraries(),
++            libraries=['unrar'],
+             library_dirs=library_dirs(),
+             define_macros=macros(),
+             sources=[str('src/unrardll/wrapper.cpp')]
+diff --git a/src/unrardll/__init__.py b/src/unrardll/__init__.py
+index 40ab4d2..15c0cff 100644
+--- a/src/unrardll/__init__.py
++++ b/src/unrardll/__init__.py
+@@ -15,7 +15,8 @@ from . import unrar
+ 
+ V = namedtuple('Version', 'major minor patch')
+ 
+-version = V(0, 1, 5)
++str_version = '0.1.5'
++version = V(*map(int, str_version.split('.')))
+ RARDLL_VERSION = unrar.RARDllVersion
+ iswindows = hasattr(sys, 'getwindowsversion')
+ isosx = 'darwin' in sys.platform.lower()
+diff --git a/test/__init__.py b/test/__init__.py
+index bdc57b3..af0305d 100644
+--- a/test/__init__.py
++++ b/test/__init__.py
+@@ -10,8 +10,8 @@ import sys
+ import tempfile
+ import unittest
+ 
++
+ base = os.path.dirname(os.path.abspath(__file__))
+-iswindows = hasattr(sys, 'getwindowsversion')
+ 
+ 
+ class TestCase(unittest.TestCase):
+diff --git a/test/basic.py b/test/basic.py
+index 169700d..911e28b 100644
+--- a/test/basic.py
++++ b/test/basic.py
+@@ -111,12 +111,12 @@ class BasicTests(TestCase):
+             pass
+         with open_archive(simple_rar, None, mode=unrar.RAR_OM_EXTRACT) as f:
+             unrar.read_next_header(f)
+-            self.assertRaisesRegexp(unrar.UNRARError, "An exception occurred in the password callback handler", unrar.process_file, f)
++            self.assertRaisesRegex(unrar.UNRARError, "An exception occurred in the password callback handler", unrar.process_file, f)
+         c = Callback()
+         c._process_data = lambda x: None
+         with open_archive(simple_rar, c, mode=unrar.RAR_OM_EXTRACT) as f:
+             unrar.read_next_header(f)
+-            self.assertRaisesRegexp(unrar.UNRARError,  "Processing canceled by the callback", unrar.process_file, f)
++            self.assertRaisesRegex(unrar.UNRARError,  "Processing canceled by the callback", unrar.process_file, f)
+ 
+     def test_multipart(self):
+         self.ae(list(names(multipart_rar)), ['Fifteen_Feet_of_Time.pdf'])
