@@ -1,3 +1,10 @@
+unrardll (0.1.5-5) UNRELEASED; urgency=medium
+
+  * Import upstream commits to modernize build system
+  * Renumber patches
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Mon, 14 Nov 2022 02:28:28 +0900
+
 unrardll (0.1.5-4) unstable; urgency=medium
 
   * Rebuild for python3.10-only transition
