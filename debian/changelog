@@ -1,3 +1,9 @@
+unrardll (0.1.5-6) UNRELEASED; urgency=medium
+
+  * Upgrade Debian standards
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sun, 18 Dec 2022 20:12:02 +0900
+
 unrardll (0.1.5-5) unstable; urgency=medium
 
   * Import upstream commits to modernize build system
