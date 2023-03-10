@@ -15,7 +15,8 @@ from . import unrar
 
 V = namedtuple('Version', 'major minor patch')
 
-version = V(0, 1, 5)
+str_version = '0.1.7'
+version = V(*map(int, str_version.split('.')))
 RARDLL_VERSION = unrar.RARDllVersion
 iswindows = hasattr(sys, 'getwindowsversion')
 isosx = 'darwin' in sys.platform.lower()
@@ -319,3 +320,24 @@ def extract_member(archive_path, predicate, password=None, verify_data=False):
     if verify_data:
         verify(archive_path, crc_map, password=password)
     return h['filename'], b''.join(buf)
+
+
+def extract_members(archive_path, callback, password=None, verify_data=False):
+    '''
+    Extract multiple members calling callback, with header and data and optionally verification.
+    Only members for which callback returns True when called with the header are extracted.
+    '''
+    c = ExtractCallback(pw=password, verify_data=verify_data)
+    archive_path = type('')(archive_path)
+    with open_archive(archive_path, c, unrar.RAR_OM_EXTRACT) as f:
+        while True:
+            h = do_func(unrar.read_next_header, archive_path, f, c)
+            if h is None:
+                break
+            if h['is_dir'] or h['redir_type'] or not callback(h):
+                do_func(unrar.process_file, archive_path, f, c, unrar.RAR_SKIP)
+            else:
+                c.reset(write=callback)
+                do_func(unrar.process_file, archive_path, f, c)
+                if verify_data:
+                    callback(c.crc & 0xffffffff == h['file_crc'] & 0xffffffff)
