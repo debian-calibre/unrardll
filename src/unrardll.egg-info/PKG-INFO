@@ -1,12 +1,11 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: unrardll
-Version: 0.1.5
+Version: 0.1.7
 Summary: Wrap the Unrar DLL to enable unraring of files in python
 Home-page: https://github.com/kovidgoyal/unrardll
 Author: Kovid Goyal
-Author-email: redacted@acme.com
+Author-email: no@no.no
 License: BSD
-Description: UNKNOWN
 Platform: any
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Developers
@@ -16,3 +15,4 @@ Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Topic :: System :: Archiving :: Compression
+License-File: LICENSE

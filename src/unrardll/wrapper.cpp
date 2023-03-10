@@ -123,7 +123,7 @@ static char _process_data[] = "_process_data";
 
 static inline bool
 write_all(const char* data, size_t sz, int fd) {
-    ssize_t written;
+    Py_ssize_t written;
     int err;
     while(sz > 0) {
 #ifdef _WIN32

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # vim:fileencoding=utf-8
 # License: BSD Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
@@ -6,19 +6,57 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import importlib
 import os
-import re
 import sys
-from distutils.command.build import build as Build
 
-from setuptools import Extension, setup
+from setuptools import Command, Extension, setup
 
-self_path = os.path.abspath(__file__)
-base = os.path.dirname(self_path)
 iswindows = hasattr(sys, 'getwindowsversion')
-raw = open(os.path.join(base, 'src/unrardll/__init__.py'),
-           'rb').read().decode('utf-8')
-version = map(
-    int, re.search(r'^version = V\((\d+), (\d+), (\d+)', raw, flags=re.M).groups())
+
+
+def find_tests():
+    import unittest
+    suites = []
+    for f in os.listdir('test'):
+        n, ext = os.path.splitext(f)
+        if ext == '.py' and n not in ('__init__',):
+            m = importlib.import_module('test.' + n)
+            suite = unittest.defaultTestLoader.loadTestsFromModule(m)
+            suites.append(suite)
+    return unittest.TestSuite(suites)
+
+
+class Test(Command):
+
+    description = "run unit tests after in-place build"
+    user_options = []
+    sub_commands = [
+        ('build', None),
+    ]
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import unittest
+        for cmd_name in self.get_sub_commands():
+            self.run_command(cmd_name)
+        build = self.get_finalized_command('build')
+        sys.path.insert(0, os.path.abspath(build.build_lib))
+        if iswindows and 'UNRAR_DLL_DIR' in os.environ and hasattr(os, 'add_dll_directory'):
+            unrardir = os.path.join(build.build_lib, 'unrardll')
+            sys.save_dll_dir = os.add_dll_directory(os.environ['UNRAR_DLL_DIR'])
+            print('Added Dll directory:', sys.save_dll_dir,
+                  'with contents:', os.listdir(os.environ['UNRAR_DLL_DIR']))
+            print('Contents of build dir:', unrardir, os.listdir(unrardir), flush=True)
+        tests = find_tests()
+        r = unittest.TextTestRunner
+        result = r(verbosity=2).run(tests)
+
+        if not result.wasSuccessful():
+            raise SystemExit(1)
 
 
 def include_dirs():
@@ -26,10 +64,6 @@ def include_dirs():
     if 'UNRAR_INCLUDE' in os.environ:
         ans.extend(os.environ['UNRAR_INCLUDE'].split(os.pathsep))
     return ans
-
-
-def libraries():
-    return ['unrar']
 
 
 def library_dirs():
@@ -49,71 +83,13 @@ def macros():
     return ans
 
 
-def find_tests():
-    import unittest
-    suites = []
-    for f in os.listdir(os.path.join(base, 'test')):
-        n, ext = os.path.splitext(f)
-        if ext == '.py' and n not in ('__init__',):
-            m = importlib.import_module('test.' + n)
-            suite = unittest.defaultTestLoader.loadTestsFromModule(m)
-            suites.append(suite)
-    return unittest.TestSuite(suites)
-
-
-class Test(Build):
-
-    description = "run unit tests after in-place build"
-
-    def run(self):
-        import unittest
-        Build.run(self)
-        if self.dry_run:
-            self.announce('skipping "test" (dry run)')
-            return
-        sys.path.insert(0, self.build_lib)
-        if iswindows and 'UNRAR_DLL_DIR' in os.environ and hasattr(os, 'add_dll_directory'):
-            unrardir = os.path.join(self.build_lib, 'unrardll')
-            sys.save_dll_dir = os.add_dll_directory(os.environ['UNRAR_DLL_DIR'])
-            print('Added Dll directory:', sys.save_dll_dir, 'with contents:', os.listdir(os.environ['UNRAR_DLL_DIR']))
-            print('Contents of build dir:', unrardir, os.listdir(unrardir), flush=True)
-        tests = find_tests()
-        r = unittest.TextTestRunner
-        result = r(verbosity=2).run(tests)
-
-        if not result.wasSuccessful():
-            raise SystemExit(1)
-
-
-CLASSIFIERS = """\
-Development Status :: 5 - Production/Stable
-Intended Audience :: Developers
-License :: OSI Approved :: BSD License
-Natural Language :: English
-Operating System :: OS Independent
-Programming Language :: Python
-Topic :: Software Development :: Libraries :: Python Modules
-Topic :: System :: Archiving :: Compression
-"""
-
 setup(
-    name=str('unrardll'),
-    version='{}.{}.{}'.format(*version),
-    author='Kovid Goyal',
-    author_email='redacted@acme.com',
-    description='Wrap the Unrar DLL to enable unraring of files in python',
-    license='BSD',
-    url='https://github.com/kovidgoyal/unrardll',
-    classifiers=[c for c in CLASSIFIERS.split("\n") if c],
-    platforms=['any'],
-    packages=[str('unrardll')],
-    package_dir={'': str('src')},
     cmdclass={'test': Test},
     ext_modules=[
         Extension(
             str('unrardll.unrar'),
             include_dirs=include_dirs(),
-            libraries=libraries(),
+            libraries=['unrar'],
             library_dirs=library_dirs(),
             define_macros=macros(),
             sources=[str('src/unrardll/wrapper.cpp')]

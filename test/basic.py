@@ -11,7 +11,7 @@ import unittest
 from binascii import crc32
 
 from unrardll import (
-    BadPassword, PasswordRequired, comment, extract, extract_member, headers, names,
+    BadPassword, PasswordRequired, comment, extract, extract_member, extract_members, headers, names,
     open_archive, unrar, make_long_path_useable
 )
 
@@ -111,12 +111,12 @@ class BasicTests(TestCase):
             pass
         with open_archive(simple_rar, None, mode=unrar.RAR_OM_EXTRACT) as f:
             unrar.read_next_header(f)
-            self.assertRaisesRegexp(unrar.UNRARError, "An exception occurred in the password callback handler", unrar.process_file, f)
+            self.assertRaisesRegex(unrar.UNRARError, "An exception occurred in the password callback handler", unrar.process_file, f)
         c = Callback()
         c._process_data = lambda x: None
         with open_archive(simple_rar, c, mode=unrar.RAR_OM_EXTRACT) as f:
             unrar.read_next_header(f)
-            self.assertRaisesRegexp(unrar.UNRARError,  "Processing canceled by the callback", unrar.process_file, f)
+            self.assertRaisesRegex(unrar.UNRARError,  "Processing canceled by the callback", unrar.process_file, f)
 
     def test_multipart(self):
         self.ae(list(names(multipart_rar)), ['Fifteen_Feet_of_Time.pdf'])
@@ -131,6 +131,21 @@ class BasicTests(TestCase):
     def test_extract_member(self):
         self.ae(extract_member(simple_rar, lambda h: h['filename'] == 'one.txt', verify_data=True), ('one.txt', sr_data['one.txt']))
         self.ae(extract_member(simple_rar, lambda h: False), (None, None))
+
+    def test_extract_members(self):
+        data = {'one.txt': b'', 'uncompressed': b''}
+        current = ''
+        def callback(x):
+            nonlocal current
+            if isinstance(x, dict):
+                current = x['filename']
+                return x['filename'] in data
+            if isinstance(x, bytes):
+                data[current] += x
+                return
+            self.assertTrue(x, 'Verification failed for: ' + current)
+        extract_members(simple_rar, callback, verify_data=True)
+        self.assertEqual(data, {k:sr_data[k] for k in data})
 
     def test_open_failure(self):
         self.assertRaises(OSError, extract, 'sdfgsfgsggsdfg.rar', '.')
