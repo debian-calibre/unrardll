@@ -8,11 +8,11 @@ Subject: Remove Python 2 generated file from source file list
  1 file changed, 2 deletions(-)
 
 diff --git a/src/unrardll.egg-info/SOURCES.txt b/src/unrardll.egg-info/SOURCES.txt
-index 2c8e350..2e00a79 100644
+index 3265289..326cd17 100644
 --- a/src/unrardll.egg-info/SOURCES.txt
 +++ b/src/unrardll.egg-info/SOURCES.txt
-@@ -10,9 +10,7 @@ src/unrardll.egg-info/SOURCES.txt
- src/unrardll.egg-info/dependency_links.txt
+@@ -12,9 +12,7 @@ src/unrardll.egg-info/dependency_links.txt
+ src/unrardll.egg-info/not-zip-safe
  src/unrardll.egg-info/top_level.txt
  test/__init__.py
 -test/__init__.pyc
