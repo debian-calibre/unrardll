@@ -10,14 +10,6 @@ Files-Excluded: test/__init__.pyc
                 test/__pycache__
                 src/unrardll.egg-info
 
-Files: debian/*
-Copyright: Norbert Preining <preining@debian.org> (2017)
-           YOKOTA Hiroshi <yokota.hgml@gmail.com> (2024)
-License: GPL-3+
-  The contents of the debian/ directory is released under the GNU
-  General Public Licence version 3 or (at your option) any later
-  version, unless otherwise explicitly stated in the file in question.
-
 Files: *
 Copyright: Copyright (c) 2017-, Kovid Goyal <kovid@kovidgoyal.net> All rights reserved.
 License: BSD-3-Clause
@@ -48,3 +40,11 @@ License: BSD-3-Clause
   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Files: debian/*
+Copyright: Norbert Preining <preining@debian.org> (2017)
+           YOKOTA Hiroshi <yokota.hgml@gmail.com> (2024)
+License: GPL-3+
+  The contents of the debian/ directory is released under the GNU
+  General Public Licence version 3 or (at your option) any later
+  version, unless otherwise explicitly stated in the file in question.
