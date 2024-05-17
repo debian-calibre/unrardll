@@ -1,6 +1,7 @@
 unrardll (0.1.7+ds-1) UNRELEASED; urgency=medium
 
   * Packaging update
+  * Standards-Version: 4.7.0 (routine-update)
 
  -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Fri, 17 May 2024 12:05:14 +0900
 

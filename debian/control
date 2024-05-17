@@ -9,7 +9,7 @@ Build-Depends: debhelper-compat (= 13),
                python3-all-dev,
                python3-setuptools,
                libunrar-dev
-Standards-Version: 4.6.2
+Standards-Version: 4.7.0
 XS-Autobuild: yes
 Homepage: https://github.com/kovidgoyal/unrardll
 Vcs-Browser: https://github.com/debian-calibre/unrardll
