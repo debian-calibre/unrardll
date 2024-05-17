@@ -4,7 +4,7 @@ Source: https://github.com/kovidgoyal/unrardll/releases
 Comment: This package was debianized by Norbert Preining <preining@debian.org> on
          Tue Jul 18 09:50:11 JST 2017.
          The original source was downloaded from
-	 https://github.com/kovidgoyal/unrardll/releases
+         https://github.com/kovidgoyal/unrardll/releases
 Files-Excluded: test/__init__.pyc
                 test/basic.pyc
                 test/__pycache__
