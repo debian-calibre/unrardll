@@ -5,3 +5,6 @@ export PYBUILD_NAME = unrardll
 
 %:
 	dh $@ --buildsystem=pybuild
+
+override_dh_auto_test:
+	dh_auto_test -- --system custom --test-args "{interpreter} setup.py test"
