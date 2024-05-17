@@ -6,7 +6,7 @@ Maintainer: Unrardll maintainer team <team+unrardll@tracker.debian.org>
 Uploaders: Norbert Preining <norbert@preining.info>,
           YOKOTA Hiroshi <yokota.hgml@gmail.com>
 Build-Depends: debhelper-compat (= 13),
-               dh-python,
+               dh-sequence-python3,
                python3-all-dev,
                python3-setuptools,
                libunrar-dev
