@@ -4,9 +4,10 @@ unrardll (0.1.7+ds-1) UNRELEASED; urgency=medium
   * Standards-Version: 4.7.0 (routine-update)
   * Testsuite: autopkgtest-pkg-python (routine-update)
   * Build-Depends: s/dh-python/dh-sequence-python3/ (routine-update)
+  * Update license format
   * No tab in license text (routine-update)
 
- -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Fri, 17 May 2024 12:05:14 +0900
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Fri, 17 May 2024 13:15:46 +0900
 
 unrardll (0.1.7-3) unstable; urgency=medium
 
