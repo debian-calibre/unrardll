@@ -45,6 +45,8 @@ Files: debian/*
 Copyright: Norbert Preining <preining@debian.org> (2017)
            YOKOTA Hiroshi <yokota.hgml@gmail.com> (2024)
 License: GPL-3+
-  The contents of the debian/ directory is released under the GNU
-  General Public Licence version 3 or (at your option) any later
-  version, unless otherwise explicitly stated in the file in question.
+  The full text of the GPL is distributed as in
+  /usr/share/common-licenses/GPL-3 on Debian systems.
+Comment: The contents of the debian/ directory is released under the GNU
+         General Public Licence version 3 or (at your option) any later
+         version, unless otherwise explicitly stated in the file in question.
