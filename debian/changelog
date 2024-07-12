@@ -1,3 +1,10 @@
+unrardll (0.1.7+ds-2) unstable; urgency=medium
+
+  * Rebuild for python3.12-only transition.
+    Drop Python 3.11 support.
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Fri, 12 Jul 2024 20:50:18 +0900
+
 unrardll (0.1.7+ds-1) unstable; urgency=medium
 
   * Packaging update
