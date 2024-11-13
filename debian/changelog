@@ -1,3 +1,10 @@
+unrardll (0.1.7+ds-3) unstable; urgency=medium
+
+  * Rebuild for python3.13-add transition.
+    Add Python 3.13 support.
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Thu, 14 Nov 2024 08:25:13 +0900
+
 unrardll (0.1.7+ds-2) unstable; urgency=medium
 
   * Rebuild for python3.12-only transition.
