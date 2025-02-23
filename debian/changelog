@@ -1,3 +1,9 @@
+unrardll (0.1.7+ds-4) UNRELEASED; urgency=medium
+
+  * Upgrade Debian policy standards to 4.7.1
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sun, 23 Feb 2025 10:22:16 +0900
+
 unrardll (0.1.7+ds-3) unstable; urgency=medium
 
   * Rebuild for python3.13-add transition.
