@@ -7,6 +7,7 @@ Uploaders: Norbert Preining <norbert@preining.info>,
           YOKOTA Hiroshi <yokota.hgml@gmail.com>
 Build-Depends: debhelper-compat (= 13),
                dh-sequence-python3,
+               pybuild-plugin-pyproject,
                python3-all-dev,
                python3-setuptools,
                libunrar-dev
