@@ -1,1 +1,4 @@
 0001-Remove-nonexistent-file-from-manifest.patch
+upstream/0002-Fix-4.patch
+upstream/0003-tests-move-test-file-to-something-easily-detected-by.patch
+upstream/0004-Fix-6.patch

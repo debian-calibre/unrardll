@@ -1,0 +1,21 @@
+From: Kovid Goyal <kovid@kovidgoyal.net>
+Date: Sat, 3 Feb 2024 08:37:15 +0530
+Subject: Fix #6
+
+Forwarded: not-needed
+---
+ src/unrardll/wrapper.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/unrardll/wrapper.cpp b/src/unrardll/wrapper.cpp
+index 023943d..1bcafee 100644
+--- a/src/unrardll/wrapper.cpp
++++ b/src/unrardll/wrapper.cpp
+@@ -477,6 +477,7 @@ initunrar(void)
+     }
+     UNRARError = st->error;
+     if (PyModule_AddObject(module, "UNRARError", UNRARError) != 0) { INITERROR;}
++    Py_INCREF(UNRARError);
+     if (PyModule_AddIntConstant(module, "RARDllVersion",  RARGetDllVersion()) != 0) { INITERROR; }
+     if (PyModule_AddIntMacro(module, RAR_OM_LIST) != 0) { INITERROR; }
+     if (PyModule_AddIntMacro(module, RAR_OM_EXTRACT) != 0) { INITERROR; }

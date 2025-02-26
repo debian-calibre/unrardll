@@ -1,0 +1,22 @@
+From: Kovid Goyal <kovid@kovidgoyal.net>
+Date: Fri, 30 Jun 2023 16:38:10 +0530
+Subject: Fix #4
+
+Forwarded: not-needed
+---
+ src/unrardll/__init__.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/unrardll/__init__.py b/src/unrardll/__init__.py
+index df86fee..de49eb3 100644
+--- a/src/unrardll/__init__.py
++++ b/src/unrardll/__init__.py
+@@ -145,6 +145,8 @@ def do_func(func, archive_path, f, c, *args):
+         m = e.args[0]
+         if m == 'ERAR_MISSING_PASSWORD':
+             raise PasswordRequired(archive_path)
++        if m == 'ERAR_BAD_PASSWORD':
++            raise BadPassword(archive_path)
+         if m == 'ERAR_BAD_DATA' and c.password_requested:
+             raise (BadPassword if c.pw else PasswordRequired)(archive_path)
+         raise
