@@ -1,12 +1,13 @@
-unrardll (0.1.7+ds-5) UNRELEASED; urgency=medium
+unrardll (0.1.7+ds-5) unstable; urgency=medium
 
   * Import upstream fixups
   * Lintian fix: extra-license-file
   * Lintian fix: extended-description-is-probably-too-short
   * Lintian fix: missing-prerequisite-for-pyproject-backend
   * Lintian fix: debian-watch-could-verify-download
+  * Allow python3.13-only transition
 
- -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Thu, 27 Feb 2025 04:04:04 +0900
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Thu, 27 Feb 2025 04:05:43 +0900
 
 unrardll (0.1.7+ds-4) unstable; urgency=medium
 
