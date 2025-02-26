@@ -22,4 +22,5 @@ Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
 Depends: ${python3:Depends}, ${misc:Depends}, ${shlibs:Depends}
 Description: Python wrapper for the unrar shared library
- Python library that provides access to libunrar
+ Python library that provides access to libunrar.
+ See also: UnRAR dll https://www.rarlab.com/rar_add.htm
