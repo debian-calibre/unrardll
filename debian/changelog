@@ -1,8 +1,8 @@
-unrardll (0.1.7+ds-9) UNRELEASED; urgency=medium
+unrardll (0.1.7+ds-9) unstable; urgency=medium
 
   * Use salsa CI
 
- -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 23 Aug 2025 16:04:35 +0900
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 23 Aug 2025 16:04:49 +0900
 
 unrardll (0.1.7+ds-8) unstable; urgency=medium
 
