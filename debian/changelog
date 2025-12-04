@@ -1,3 +1,9 @@
+unrardll (0.1.7+ds-11) UNRELEASED; urgency=medium
+
+  * Lintian fix: redundant-rules-requires-root-no-field
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Thu, 04 Dec 2025 11:40:31 +0900
+
 unrardll (0.1.7+ds-10) unstable; urgency=medium
 
   * Drop Emacs mode line from debian/watch
