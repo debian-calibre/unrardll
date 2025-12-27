@@ -1,7 +1,6 @@
 Source: unrardll
 Section: contrib/python
 Testsuite: autopkgtest-pkg-python
-Priority: optional
 Maintainer: Unrardll maintainer team <team+unrardll@tracker.debian.org>
 Uploaders:
     Norbert Preining <norbert@preining.info>,
@@ -13,7 +12,7 @@ Build-Depends:
     python3-all-dev,
     python3-setuptools,
     libunrar-dev
-Standards-Version: 4.7.2
+Standards-Version: 4.7.3
 XS-Autobuild: yes
 Homepage: https://github.com/kovidgoyal/unrardll
 Vcs-Browser: https://github.com/debian-calibre/unrardll
