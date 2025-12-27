@@ -1,3 +1,9 @@
+unrardll (0.1.7+ds-12) UNRELEASED; urgency=medium
+
+  * Upgrade Debian standards to 4.7.3
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 27 Dec 2025 15:45:30 +0900
+
 unrardll (0.1.7+ds-11) unstable; urgency=medium
 
   * Lintian fix: redundant-rules-requires-root-no-field
