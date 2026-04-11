@@ -1,3 +1,16 @@
+unrardll (0.1.7+ds1-1) UNRELEASED; urgency=medium
+
+  * Update upstream source URL
+  * Update copyright years
+  * Allow egg-info
+  * Use setuptools-scm
+  * Upgrade Debian policy standards
+  * Update version mangle to repack upstream
+  * No needs to drop upstream files
+  * New upstream version 0.1.7+ds1
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 11 Apr 2026 23:00:58 +0900
+
 unrardll (0.1.7+ds-12) unstable; urgency=medium
 
   * Upgrade Debian standards to 4.7.3
