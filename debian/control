@@ -11,6 +11,7 @@ Build-Depends:
     pybuild-plugin-pyproject,
     python3-all-dev,
     python3-setuptools,
+    python3-setuptools-scm,
     libunrar-dev
 Standards-Version: 4.7.3
 XS-Autobuild: yes
