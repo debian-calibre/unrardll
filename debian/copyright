@@ -8,7 +8,6 @@ Comment: This package was debianized by Norbert Preining <preining@debian.org> o
 Files-Excluded: test/__init__.pyc
                 test/basic.pyc
                 test/__pycache__
-                src/unrardll.egg-info
 
 Files: *
 Copyright: Copyright (c) 2017-, Kovid Goyal <kovid@kovidgoyal.net> All rights reserved.
