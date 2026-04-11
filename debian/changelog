@@ -1,4 +1,4 @@
-unrardll (0.1.7+ds1-1) UNRELEASED; urgency=medium
+unrardll (0.1.7+ds1-1) unstable; urgency=medium
 
   * Update upstream source URL
   * Update copyright years
@@ -9,7 +9,7 @@ unrardll (0.1.7+ds1-1) UNRELEASED; urgency=medium
   * No needs to drop upstream files
   * New upstream version 0.1.7+ds1
 
- -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 11 Apr 2026 23:00:58 +0900
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sat, 11 Apr 2026 23:18:01 +0900
 
 unrardll (0.1.7+ds-12) unstable; urgency=medium
 
