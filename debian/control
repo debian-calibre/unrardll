@@ -13,7 +13,7 @@ Build-Depends:
     python3-setuptools,
     python3-setuptools-scm,
     libunrar-dev
-Standards-Version: 4.7.3
+Standards-Version: 4.7.4
 XS-Autobuild: yes
 Homepage: https://github.com/kovidgoyal/unrardll
 Vcs-Browser: https://github.com/debian-calibre/unrardll
