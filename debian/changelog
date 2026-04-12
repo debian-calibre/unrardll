@@ -1,3 +1,11 @@
+unrardll (0.1.7+ds1-2) UNRELEASED; urgency=medium
+
+  * Update extend-diff-ignore
+  * Add psutil for memory leak test
+  * Drop setuptools-scm
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Sun, 12 Apr 2026 12:43:12 +0900
+
 unrardll (0.1.7+ds1-1) unstable; urgency=medium
 
   * Update upstream source URL
