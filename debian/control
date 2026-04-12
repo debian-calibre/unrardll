@@ -12,7 +12,6 @@ Build-Depends:
     python3-all-dev,
     python3-psutil,
     python3-setuptools,
-    python3-setuptools-scm,
     libunrar-dev
 Standards-Version: 4.7.4
 XS-Autobuild: yes
