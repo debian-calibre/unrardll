@@ -10,6 +10,7 @@ Build-Depends:
     dh-sequence-python3,
     pybuild-plugin-pyproject,
     python3-all-dev,
+    python3-psutil,
     python3-setuptools,
     python3-setuptools-scm,
     libunrar-dev
