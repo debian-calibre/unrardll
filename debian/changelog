@@ -1,8 +1,8 @@
-unrardll (0.1.7+ds1-3) UNRELEASED; urgency=medium
+unrardll (0.1.7+ds1-3) unstable; urgency=medium
 
   * Upgrade debhelper-compat level to v14
 
- -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Tue, 25 Aug 2026 01:06:56 +0900
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Tue, 25 Aug 2026 02:31:50 +0900
 
 unrardll (0.1.7+ds1-2) unstable; urgency=medium
 
