@@ -21,7 +21,7 @@ Vcs-Browser: https://github.com/debian-calibre/unrardll
 Vcs-Git: https://github.com/debian-calibre/unrardll.git
 
 Package: python3-unrardll
-Architecture: any
+Architecture: amd64 arm64 armhf i386 ppc64el
 Depends:
   ${python3:Depends},
   ${shlibs:Depends},
