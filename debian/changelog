@@ -1,3 +1,9 @@
+unrardll (0.1.7+ds1-5) UNRELEASED; urgency=medium
+
+  * Explicitly drop Python 3.13 support
+
+ -- YOKOTA Hiroshi <yokota.hgml@gmail.com>  Tue, 01 Sep 2026 15:29:17 +0900
+
 unrardll (0.1.7+ds1-4) unstable; urgency=medium
 
   * Rebuild to drop Python 3.13 support
